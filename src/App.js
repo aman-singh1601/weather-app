@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchInfo } from './features/weather/weatherSlice';
 import { WeatherCard } from './components/WeatherCard/WeatherCard';
 
@@ -8,6 +8,8 @@ import { WeatherCard } from './components/WeatherCard/WeatherCard';
 
 function App() {
 const dispatch=useDispatch();
+const state=useSelector(state=>state)
+const info=state?.weather?.info
 const [location,setLocation]=useState('');
 
 const handleChange=(e)=>{
@@ -18,15 +20,11 @@ const handleClick=(e)=>{
   dispatch(fetchInfo(location))
   setLocation('');
 }
-
-  
-
-
   return (
-   <div className='h-screen flex flex-col bg-[#50858B] '>
-      <span className='m-auto mt-10 font-medium text-4xl font-serif text-[#A1D2CE] ' >Weather App</span>
-      <span className='m-auto my-4 text-xl text-[#A1D2CE] '> Find out the current weather situation around the world</span>
-      <div className=" w-auto m-auto flex">
+   <div className='h-screen flex flex-col items-center bg-[#50858B] '>
+      <span className=' mt-10 mb-6 font-medium text-4xl font-serif text-[#A1D2CE] ' >Weather App</span>
+      <span className=' text-xl text-[#A1D2CE] '> Find out the current weather situation around the world</span>
+      <div className=" w-auto mt-4 mb-10 flex">
           <input className=" w-[160px] pt-[20px] px-[10px] pb-[10px] bg-transparent outline-none box text-xl text-[#A1D2CE]" 
            placeholder="Enter Place" 
           type='text' 
@@ -37,7 +35,10 @@ const handleClick=(e)=>{
             onClick={handleClick}
           >Search</button>
       </div>
-      <WeatherCard/>
+      {
+        info.length!==0 ? <WeatherCard/>:null
+      }
+      
    </div>
   );
 }
